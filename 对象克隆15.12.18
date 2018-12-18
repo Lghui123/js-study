@@ -1,0 +1,64 @@
+//克隆
+var person1={
+    name:"刘",
+    age:20
+}
+var person2=person1;              //person1和person2都指向一个存储空间，改变person2 age属性，person1也改变  
+person2.age=30;
+console.log(person1,person2);  //person1和person2的age属性都变成30
+
+//浅拷贝 -仅处理对象属性值，无法处理对象中的引用值
+var person1={
+    name:"刘",
+    age:20,
+    study:{
+    
+    }
+}
+var person2=clone(person1);
+person2.age=30;
+console.log(person1,person2);    //person1.age=20,person2.age=30
+person2.study.first='HTML';
+console.log(person1,person2);    //person1和person2中study属性内都有first='HTML   ----浅拷贝
+
+function clone(origin,target) {
+    var tar=target || {};
+    for(var key in origin){
+        if(origin.hasOwnProperty(key)){          //只循环person1上的属性，防止将object.prototype上的属性一起循环
+            tar[key] = origin[key];
+        }
+    }
+    return tar;
+}
+
+//深拷贝
+var person2=deepclone(person1);
+person2.age=30;
+console.log(person1,person2);    //person1.age=20,person2.age=30
+person2.study.first='HTML';
+console.log(person1,person2);    //person2中study属性内都有first='HTML,person1.study中没有   ----深拷贝
+
+function deepclone(origin,target) {
+    var tar=target || {},
+        toStr=Object.prototype.toString, 
+        arrType='[object Array]';
+        for(var key in origin){
+            if(origin.hasOwnProperty(key)){
+                if(typeof(origin[key]) === 'object' && origin[key] !== null){       //判断person1中属性是否为引用值（因为typeof(null)=null,所以要排除）
+                    if(toStr.call(origin[key]) === arrType){                    //判断person1中引用值属性是否为数组
+                        tar[key]=[];
+                    }else{
+                        tar[key]={};
+                    }
+                    deepclone(origin[key],tar[key]);                          //递归（引用值属性中有属性）
+                }else{
+                    tar[key]=origin[key];
+                }
+            }
+        }
+    return tar;
+}
+
+
+
+*浅拷贝在复制对象时，遍历对象内属性，但直接复制引用值属性；深拷贝则是遍历到引用值属性时，会遍历引用值属性内的属性。
