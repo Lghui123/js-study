@@ -1,0 +1,21 @@
+window.onload=function(){
+    init();
+}
+function init() {                        //调用
+   initFb();
+   initDiv();
+}
+var initFb=(function () {                 //创建initFb变量保存立即执行函数（立即执行函数执行完会被销毁），将fb()函数赋值给initFb,保存在全局变量中
+    function fb() {
+    
+      ...                                 //每个立即执行函数内部与外部全局作用域互不影响
+      
+    return fb;
+})();
+var initDiv=(function () {
+    function div() {
+        
+        ...
+        
+    return div;
+})();
