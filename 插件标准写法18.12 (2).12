@@ -1,0 +1,11 @@
+;(function(){
+  var Test=function(){
+        ...
+  }
+  
+  Test.prototype={
+        ...
+  }
+  
+  window.Tes=Test;
+})();
